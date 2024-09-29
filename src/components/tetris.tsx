@@ -6,12 +6,10 @@ type Props = {}
 
 export const Tetris = (props: Props) => {
   return (
-    <div className="flex text-white">
-      <div className="flex flex-row gap-x-4">
-        <Board />
-        <div className="flex min-w-36 flex-row">
-          <UpcomingBlocks blocks={[randomBlock()]} />
-        </div>
+    <div className="flex flex-row gap-x-4 text-white">
+      <Board />
+      <div className="flex min-w-36 flex-row">
+        <UpcomingBlocks blocks={[randomBlock()]} />
       </div>
     </div>
   )
