@@ -15,16 +15,15 @@ export type BoardShape = Block[]
 
 export type BlockShape = Block[][]
 
+export type BlockNoEmpty = Exclude<Block, typeof Block.EMPTY>
+
 export type ShapesObject = {
-  [key in Block]: {
+  [key in BlockNoEmpty]: {
     shapes: BlockShape[]
   }
 }
 
-export const Shapes: ShapesObject = {
-  [Block.EMPTY]: {
-    shapes: [[[Block.EMPTY]]],
-  },
+export const shapes: ShapesObject = {
   [Block.I]: {
     shapes: [
       [
@@ -155,3 +154,8 @@ export const BOARD_WIDTH = 10
 export const BOARD_HEIGHT = 20
 
 export const BOARD_SIZE = BOARD_WIDTH * BOARD_HEIGHT
+
+export type UpcomingBlock = {
+  block: Block
+  rotationIndex: number
+}
