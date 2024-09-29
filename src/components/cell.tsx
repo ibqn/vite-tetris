@@ -1,5 +1,5 @@
-import { Block } from '../types'
-import { cn } from '../utils/class-names'
+import { Block } from '@/types'
+import { cn } from '@/utils/class-names'
 
 type Props = {
   block: Block

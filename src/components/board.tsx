@@ -1,5 +1,5 @@
-import { Block, BOARD_SIZE } from '../types'
-import { Cell } from './cell'
+import { Block, BOARD_SIZE } from '@/types'
+import { Cell } from '@/components/cell'
 
 type Props = {}
 
