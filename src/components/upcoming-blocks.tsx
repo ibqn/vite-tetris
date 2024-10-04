@@ -8,6 +8,7 @@ type Props = {
 export const UpcomingBlocks = ({ blocks }: Props) => {
   const [currentBlock] = blocks
   const shape = shapes[currentBlock].shapes[0]
+
   return (
     <div className="shadow-glow flex flex-1 flex-col items-center gap-4 bg-black/70 px-2 py-4">
       <div className="uppercase">next</div>
