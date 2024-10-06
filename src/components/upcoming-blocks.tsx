@@ -10,7 +10,7 @@ export const UpcomingBlocks = ({ blocks }: Props) => {
   const shape = shapes[currentBlock].shapes[0]
 
   return (
-    <div className="shadow-glow flex flex-1 flex-col items-center gap-4 bg-black/70 px-2 py-4">
+    <div className="flex max-h-[200px] flex-1 flex-col items-center gap-4 border border-white bg-black/70 px-2 py-4 shadow-glow">
       <div className="uppercase">next</div>
       <div className="flex flex-row gap-px">
         {shape.map((row, rowIndex) => (
