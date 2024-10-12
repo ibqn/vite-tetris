@@ -1,9 +1,7 @@
 import { Block, BOARD_SIZE } from '@/types'
 import { Cell } from '@/components/cell'
 
-type Props = {}
-
-export const Board = (props: Props) => {
+export const Board = () => {
   const board = Array.from<Block>({ length: BOARD_SIZE }).fill(Block.EMPTY)
   board[199] = Block.I
   board[198] = Block.I
@@ -13,7 +11,7 @@ export const Board = (props: Props) => {
   board[188] = Block.O
 
   return (
-    <div className="shadow-glow grid grid-cols-10 gap-px border border-white bg-black/70 p-px">
+    <div className="grid grid-cols-10 gap-px border border-white bg-black/70 p-px shadow-glow">
       {board.map((block, index) => (
         <Cell key={index} block={block} />
       ))}

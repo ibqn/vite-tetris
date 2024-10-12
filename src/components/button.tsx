@@ -1,5 +1,3 @@
-type Props = {}
-
-export const button = (props: Props) => {
+export const button = () => {
   return <button>button</button>
 }

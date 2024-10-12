@@ -3,9 +3,7 @@ import { UpcomingBlocks } from '@/components/upcoming-blocks'
 import { randomBlock } from '@/utils/random-block'
 import { CurrentScore } from '@/components/current-score'
 
-type Props = {}
-
-export const Tetris = (props: Props) => {
+export const Tetris = () => {
   return (
     <div className="flex flex-row gap-x-4 text-white">
       <Board />
