@@ -155,13 +155,31 @@ export const BOARD_HEIGHT = 20
 
 export const BOARD_SIZE = BOARD_WIDTH * BOARD_HEIGHT
 
-export type BoardState = {
+export type State = {
   board: BoardShape
   currentBlock: BlockNoEmpty
+  upcomingBlocks: BlockNoEmpty[]
   currentBlockShapeIndex: number
   currentBlockX: number
   currentBlockY: number
   score: number
-  isGamePaused: boolean
-  isGameOver: boolean
+  gameState: GameState
 }
+
+export type StateAction =
+  | { type: 'start' }
+  | { type: 'pause' }
+  | { type: 'game-over' }
+  | { type: 'clear-line' }
+  | {
+      type: 'update-board'
+      board: BoardShape
+    }
+
+export const GameState = {
+  RUNNING: 'running',
+  PAUSED: 'paused',
+  GAME_OVER: 'game-over',
+} as const
+
+export type GameState = (typeof GameState)[keyof typeof GameState]
