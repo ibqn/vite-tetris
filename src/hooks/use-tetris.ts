@@ -5,9 +5,9 @@ import { useReducer } from 'react'
 
 const initialState: State = {
   board: getEmptyBoard(),
-  currentBlock: Block.I,
+  currentBlock: { block: Block.I, shapeIndex: 0 },
   currentBlockShapeIndex: 0,
-  upcomingBlocks: [Block.J, Block.L],
+  upcomingBlocks: [],
   currentBlockX: 0,
   currentBlockY: 3,
   score: 0,
@@ -52,8 +52,10 @@ export const useTetris = () => {
   const [state, dispatchState] = useReducer(stateReducer, initialState, (emptyState) => ({
     ...emptyState,
     currentBlock: getRandomBlock(),
+    upcomingBlocks: [getRandomBlock(), getRandomBlock()],
   }))
 
   const startGame = () => dispatchState({ type: 'start' })
+
   return { ...state, startGame }
 }

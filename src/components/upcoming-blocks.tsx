@@ -1,14 +1,14 @@
-import { BlockNoEmpty, shapes } from '@/types'
+import type { BlockVariant } from '@/types'
 import { Cell } from '@/components/cell'
+import { getShape } from '@/utils/shape'
 
 type Props = {
-  blocks: BlockNoEmpty[]
+  upcomingBlocks: BlockVariant[]
 }
 
-export const UpcomingBlocks = ({ blocks }: Props) => {
-  const [currentBlock] = blocks
-  const shape = shapes[currentBlock].shapes[0]
-  console.log('shape', shape)
+export const UpcomingBlocks = ({ upcomingBlocks }: Props) => {
+  const [upcomingBlock] = upcomingBlocks
+  const shape = getShape(upcomingBlock)
 
   return (
     <div className="flex max-h-[200px] flex-1 flex-col items-center gap-4 border border-white bg-black/70 px-2 py-4 shadow-glow">
