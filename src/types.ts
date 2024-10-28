@@ -153,6 +153,8 @@ export type State = {
 export type StateAction =
   | { type: 'start' }
   | { type: 'pause' }
+  | { type: 'resume' }
+  | { type: 'drop' }
   | { type: 'game-over' }
   | { type: 'clear-line' }
   | {

@@ -3,6 +3,7 @@ import { getEmptyBoard } from '@/utils/empty-board'
 import { getRandomBlock } from '@/utils/random-block'
 import { getShape } from '@/utils/shape'
 import { useReducer } from 'react'
+import { useInterval } from '@/hooks/use-interval'
 
 const initialState: State = {
   board: getEmptyBoard(),
@@ -28,10 +29,21 @@ const stateReducer = (state: State, action: StateAction): State => {
         gameState: GameState.RUNNING,
       }
     }
+    case 'drop': {
+      return {
+        ...state,
+        currentBlockY: state.currentBlockY + 1,
+      }
+    }
     case 'pause':
       return {
         ...state,
         gameState: GameState.PAUSED,
+      }
+    case 'resume':
+      return {
+        ...state,
+        gameState: GameState.RUNNING,
       }
     case 'game-over':
       return {
@@ -61,6 +73,15 @@ export const useTetris = () => {
   }))
 
   const startGame = () => dispatchState({ type: 'start' })
+  const pauseGame = () => dispatchState({ type: 'pause' })
+  const resumeGame = () => dispatchState({ type: 'resume' })
+
+  const gameTick = () => {
+    dispatchState({ type: 'drop' })
+    console.log('game tick')
+  }
+
+  useInterval(gameTick, state.gameState === GameState.RUNNING ? 800 : null)
 
   const currentShape = getShape(state.currentBlock)
   const currentBoard = state.board.slice()
@@ -81,5 +102,5 @@ export const useTetris = () => {
   currentBoard[196] = Block.L
   currentBoard[188] = Block.O
 
-  return { ...state, board: currentBoard, startGame }
+  return { ...state, board: currentBoard, startGame, pauseGame, resumeGame }
 }
