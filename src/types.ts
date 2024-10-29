@@ -154,13 +154,13 @@ export type StateAction =
   | { type: 'start' }
   | { type: 'pause' }
   | { type: 'resume' }
+  | { type: 'rotate' }
+  | { type: 'move-left' }
+  | { type: 'move-right' }
   | { type: 'drop' }
+  | { type: 'commit' }
   | { type: 'game-over' }
-  | { type: 'clear-line' }
-  | {
-      type: 'update-board'
-      board: BoardShape
-    }
+  | { type: 'clear-lines' }
 
 export const GameState = {
   RUNNING: 'running',

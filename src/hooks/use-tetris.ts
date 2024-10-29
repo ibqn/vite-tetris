@@ -1,9 +1,13 @@
-import { StateAction, State, GameState, Block, BOARD_WIDTH } from '@/types'
+import { StateAction, State, GameState, Block, BOARD_WIDTH, BlockVariant } from '@/types'
 import { getEmptyBoard } from '@/utils/empty-board'
 import { getRandomBlock } from '@/utils/random-block'
 import { getShape } from '@/utils/shape'
-import { useReducer } from 'react'
+import { useCallback, useEffect, useReducer } from 'react'
 import { useInterval } from '@/hooks/use-interval'
+import { rotateBlock } from '@/utils/rotate-block'
+import { hasCollision } from '@/utils/has-collision'
+import { updateBoard } from '@/utils/update-board'
+import { clearLines } from '@/utils/clear-lines'
 
 const initialState: State = {
   board: getEmptyBoard(),
@@ -23,8 +27,10 @@ const stateReducer = (state: State, action: StateAction): State => {
       const currentShape = getShape(currentBlock)
       return {
         ...state,
+        board: getEmptyBoard(),
         currentBlock,
         currentBlockX: Math.floor((BOARD_WIDTH - currentShape[0].length) / 2),
+        currentBlockY: 0,
         upcomingBlocks: [getRandomBlock(), getRandomBlock()],
         gameState: GameState.RUNNING,
       }
@@ -45,20 +51,45 @@ const stateReducer = (state: State, action: StateAction): State => {
         ...state,
         gameState: GameState.RUNNING,
       }
+    case 'rotate':
+      return {
+        ...state,
+        currentBlock: rotateBlock(state.currentBlock),
+      }
+    case 'move-left':
+      return {
+        ...state,
+        currentBlockX: state.currentBlockX - 1,
+      }
+    case 'move-right':
+      return {
+        ...state,
+        currentBlockX: state.currentBlockX + 1,
+      }
     case 'game-over':
       return {
         ...state,
         gameState: GameState.GAME_OVER,
       }
-    case 'clear-line':
+    case 'commit': {
+      const newState = updateBoard(state)
+      const upcomingBlocks = state.upcomingBlocks.slice()
+      const currentBlock = upcomingBlocks.shift() as BlockVariant
+      const currentShape = getShape(currentBlock)
+      upcomingBlocks.push(getRandomBlock())
+      // console.log('commit', upcomingBlocks)
       return {
-        ...state,
-        score: state.score + 100,
+        ...newState,
+        currentBlock,
+        upcomingBlocks,
+        currentBlockY: 0,
+        currentBlockX: Math.floor((BOARD_WIDTH - currentShape[0].length) / 2),
       }
-    case 'update-board':
+    }
+    case 'clear-lines':
       return {
         ...state,
-        board: action.board,
+        board: clearLines(state.board.slice()),
       }
     default:
       throw new Error('Invalid action')
@@ -76,31 +107,65 @@ export const useTetris = () => {
   const pauseGame = () => dispatchState({ type: 'pause' })
   const resumeGame = () => dispatchState({ type: 'resume' })
 
-  const gameTick = () => {
-    dispatchState({ type: 'drop' })
+  const gameTick = useCallback(() => {
     console.log('game tick')
-  }
+    if (state.gameState !== GameState.RUNNING) {
+      return
+    }
+
+    if (hasCollision(state)) {
+      dispatchState({ type: 'game-over' })
+      return
+    }
+
+    if (hasCollision(state, { y: 1 })) {
+      dispatchState({ type: 'commit' })
+      dispatchState({ type: 'clear-lines' })
+    } else {
+      dispatchState({ type: 'drop' })
+    }
+  }, [state, dispatchState])
 
   useInterval(gameTick, state.gameState === GameState.RUNNING ? 800 : null)
 
-  const currentShape = getShape(state.currentBlock)
-  const currentBoard = state.board.slice()
-  currentShape.forEach((row, rowIndex) => {
-    row.forEach((block, colIndex) => {
-      if (block !== Block.EMPTY) {
-        currentBoard[state.currentBlockX + colIndex + (state.currentBlockY + rowIndex) * BOARD_WIDTH] = block
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      console.log('key press')
+      if (event.key === 'ArrowLeft') {
+        if (hasCollision(state, { x: -1 })) {
+          return
+        }
+        console.log('move left')
+        dispatchState({ type: 'move-left' })
       }
-    })
-  })
+      if (event.key === 'ArrowRight') {
+        if (hasCollision(state, { x: 1 })) {
+          return
+        }
+        dispatchState({ type: 'move-right' })
+      }
+      if (event.key === 'ArrowDown') {
+        // dispatchState({ type: 'move-down' })
+        console.log('move down')
+      }
+      if (event.key === ' ') {
+        if (hasCollision(state, { y: 1 })) {
+          return
+        }
+        dispatchState({ type: 'drop' })
+      }
+      if (event.key === 'ArrowUp') {
+        if (hasCollision(state, { rotation: true })) {
+          return
+        }
+        dispatchState({ type: 'rotate' })
+      }
+    }
+    window.addEventListener('keydown', handleKeyPress)
+    return () => window.removeEventListener('keydown', handleKeyPress)
+  }, [state, dispatchState])
 
-  currentBoard[180] = Block.I
-  currentBoard[190] = Block.I
-  currentBoard[199] = Block.I
-  currentBoard[198] = Block.I
-  currentBoard[197] = Block.J
-  currentBoard[186] = Block.J
-  currentBoard[196] = Block.L
-  currentBoard[188] = Block.O
+  const updatedState = updateBoard(state)
 
-  return { ...state, board: currentBoard, startGame, pauseGame, resumeGame }
+  return { ...updatedState, startGame, pauseGame, resumeGame }
 }
