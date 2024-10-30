@@ -8,6 +8,7 @@ import { rotateBlock } from '@/utils/rotate-block'
 import { hasCollision } from '@/utils/has-collision'
 import { updateBoard } from '@/utils/update-board'
 import { clearLines } from '@/utils/clear-lines'
+import { fallDown } from '@/utils/fall-down'
 
 const initialState: State = {
   board: getEmptyBoard(),
@@ -77,7 +78,6 @@ const stateReducer = (state: State, action: StateAction): State => {
       const currentBlock = upcomingBlocks.shift() as BlockVariant
       const currentShape = getShape(currentBlock)
       upcomingBlocks.push(getRandomBlock())
-      // console.log('commit', upcomingBlocks)
       return {
         ...newState,
         currentBlock,
@@ -90,6 +90,11 @@ const stateReducer = (state: State, action: StateAction): State => {
       return {
         ...state,
         board: clearLines(state.board.slice()),
+      }
+    case 'fall':
+      return {
+        ...state,
+        currentBlockY: fallDown(state),
       }
     default:
       throw new Error('Invalid action')
@@ -145,14 +150,13 @@ export const useTetris = () => {
         dispatchState({ type: 'move-right' })
       }
       if (event.key === 'ArrowDown') {
-        // dispatchState({ type: 'move-down' })
-        console.log('move down')
-      }
-      if (event.key === ' ') {
         if (hasCollision(state, { y: 1 })) {
           return
         }
         dispatchState({ type: 'drop' })
+      }
+      if (event.key === ' ' || event.key === 'd') {
+        dispatchState({ type: 'fall' })
       }
       if (event.key === 'ArrowUp') {
         if (hasCollision(state, { rotation: true })) {

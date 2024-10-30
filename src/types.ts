@@ -161,6 +161,7 @@ export type StateAction =
   | { type: 'commit' }
   | { type: 'game-over' }
   | { type: 'clear-lines' }
+  | { type: 'fall' }
 
 export const GameState = {
   RUNNING: 'running',
