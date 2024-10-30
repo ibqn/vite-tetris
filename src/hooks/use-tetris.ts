@@ -92,10 +92,7 @@ const stateReducer = (state: State, action: StateAction): State => {
         board: clearLines(state.board.slice()),
       }
     case 'fall':
-      return {
-        ...state,
-        currentBlockY: fallDown(state),
-      }
+      return { ...fallDown(state) }
     default:
       throw new Error('Invalid action')
   }
@@ -118,7 +115,7 @@ export const useTetris = () => {
       return
     }
 
-    if (hasCollision(state)) {
+    if (hasCollision(state) && state.currentBlockY === 0) {
       dispatchState({ type: 'game-over' })
       return
     }
@@ -135,12 +132,10 @@ export const useTetris = () => {
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
-      console.log('key press')
       if (event.key === 'ArrowLeft') {
         if (hasCollision(state, { x: -1 })) {
           return
         }
-        console.log('move left')
         dispatchState({ type: 'move-left' })
       }
       if (event.key === 'ArrowRight') {
