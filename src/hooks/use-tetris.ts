@@ -9,6 +9,7 @@ import { hasCollision } from '@/utils/has-collision'
 import { updateBoard } from '@/utils/update-board'
 import { clearLines } from '@/utils/clear-lines'
 import { fallDown } from '@/utils/fall-down'
+import { dropDown } from '@/utils/drop-down'
 
 const initialState: State = {
   board: getEmptyBoard(),
@@ -37,10 +38,7 @@ const stateReducer = (state: State, action: StateAction): State => {
       }
     }
     case 'drop': {
-      return {
-        ...state,
-        currentBlockY: state.currentBlockY + 1,
-      }
+      return { ...dropDown(state) }
     }
     case 'pause':
       return {
@@ -145,9 +143,6 @@ export const useTetris = () => {
         dispatchState({ type: 'move-right' })
       }
       if (event.key === 'ArrowDown') {
-        if (hasCollision(state, { y: 1 })) {
-          return
-        }
         dispatchState({ type: 'drop' })
       }
       if (event.key === ' ' || event.key === 'd') {
