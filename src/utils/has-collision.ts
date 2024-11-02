@@ -1,6 +1,7 @@
-import { Block, BOARD_HEIGHT, BOARD_WIDTH, State } from '@/types'
-import { getShape } from '@/utils/shape'
-import { rotateBlock } from './rotate-block'
+import { Block, State } from '@/types'
+import { getShape } from '@/utils/get-shape'
+import { rotateBlock } from '@/utils/rotate-block'
+import { BOARD_HEIGHT, BOARD_WIDTH } from '@/consts'
 
 export const hasCollision = (state: State, { x = 0, y = 0, rotation = false } = {}): boolean => {
   const currentShape = getShape(rotation ? rotateBlock(state.currentBlock) : state.currentBlock)

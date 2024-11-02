@@ -1,4 +1,5 @@
-import { BOARD_WIDTH, BoardShape, Block } from '@/types'
+import { BOARD_WIDTH } from '@/consts'
+import { BoardShape, Block } from '@/types'
 import { getEmptyLine } from '@/utils/empty-board'
 
 export const clearLines = (board: BoardShape): BoardShape => {

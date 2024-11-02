@@ -1,5 +1,5 @@
 import { State } from '@/types'
-import { hasCollision } from './has-collision'
+import { hasCollision } from '@/utils/has-collision'
 
 export const dropDown = (state: State): State => {
   if (hasCollision(state, { y: 1 })) {

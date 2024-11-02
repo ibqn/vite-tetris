@@ -1,5 +1,6 @@
-import { Block, BOARD_WIDTH, State } from '@/types'
-import { getShape } from '@/utils/shape'
+import { BOARD_WIDTH } from '@/consts'
+import { Block, State } from '@/types'
+import { getShape } from '@/utils/get-shape'
 
 export const updateBoard = (state: State): State => {
   const currentShape = getShape(state.currentBlock)

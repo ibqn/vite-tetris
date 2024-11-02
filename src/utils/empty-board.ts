@@ -1,4 +1,5 @@
-import { Block, BOARD_SIZE, BOARD_WIDTH, BoardShape } from '@/types'
+import { BOARD_SIZE, BOARD_WIDTH } from '@/consts'
+import { Block, BoardShape } from '@/types'
 
 export const getEmptyBoard = (): BoardShape => Array.from<Block>({ length: BOARD_SIZE }).fill(Block.EMPTY)
 

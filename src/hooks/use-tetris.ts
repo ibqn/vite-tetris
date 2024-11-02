@@ -1,7 +1,7 @@
-import { StateAction, State, GameState, Block, BOARD_WIDTH, BlockVariant } from '@/types'
+import { StateAction, State, GameState, Block, BlockVariant } from '@/types'
 import { getEmptyBoard } from '@/utils/empty-board'
 import { getRandomBlock } from '@/utils/random-block'
-import { getShape } from '@/utils/shape'
+import { getShape } from '@/utils/get-shape'
 import { useCallback, useEffect, useReducer } from 'react'
 import { useInterval } from '@/hooks/use-interval'
 import { rotateBlock } from '@/utils/rotate-block'
@@ -10,6 +10,7 @@ import { updateBoard } from '@/utils/update-board'
 import { clearLines } from '@/utils/clear-lines'
 import { fallDown } from '@/utils/fall-down'
 import { dropDown } from '@/utils/drop-down'
+import { BOARD_WIDTH } from '@/consts'
 
 const initialState: State = {
   board: getEmptyBoard(),

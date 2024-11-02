@@ -1,6 +1,6 @@
 import type { BlockVariant } from '@/types'
 import { Cell } from '@/components/cell'
-import { getShape } from '@/utils/shape'
+import { getShape } from '@/utils/get-shape'
 
 type Props = {
   upcomingBlocks: BlockVariant[]
