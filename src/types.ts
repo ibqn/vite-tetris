@@ -37,6 +37,7 @@ export type State = {
   currentBlockY: number
   score: number
   gameState: GameState
+  linesStats: LinesStats
 }
 
 export type StateAction =
@@ -60,6 +61,7 @@ export const GameState = {
 
 export type GameState = (typeof GameState)[keyof typeof GameState]
 
+export type ClearedLine = 1 | 2 | 3 | 4
 export type LinesStats = {
-  [key in 1 | 2 | 3 | 4]: number
+  [key in ClearedLine]: number
 }

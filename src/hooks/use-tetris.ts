@@ -21,6 +21,12 @@ const initialState: State = {
   currentBlockY: 0,
   score: 0,
   gameState: GameState.GAME_OVER,
+  linesStats: {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+  },
 }
 
 const stateReducer = (state: State, action: StateAction): State => {
@@ -30,6 +36,13 @@ const stateReducer = (state: State, action: StateAction): State => {
       const currentShape = getShape(currentBlock)
       return {
         ...state,
+        score: 0,
+        linesStats: {
+          1: 0,
+          2: 0,
+          3: 0,
+          4: 0,
+        },
         board: getEmptyBoard(),
         currentBlock,
         currentBlockX: Math.floor((BOARD_WIDTH - currentShape[0].length) / 2),
