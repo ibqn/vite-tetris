@@ -17,7 +17,7 @@ export const UpcomingBlocks = ({ upcomingBlocks }: Props) => {
 
   return (
     <div className="flex max-h-[200px] flex-1 flex-col items-center gap-4 border border-white bg-black/70 px-2 py-4 shadow-glow">
-      <div className="uppercase text-white">next</div>
+      <div className="animate-pulsate uppercase text-white">next</div>
       <div className="flex flex-col gap-px">
         {shape.map((row, rowIndex) => (
           <div key={rowIndex} className="flex flex-row gap-px">
