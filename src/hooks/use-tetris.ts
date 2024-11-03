@@ -86,10 +86,7 @@ const stateReducer = (state: State, action: StateAction): State => {
       }
     }
     case 'clear-lines':
-      return {
-        ...state,
-        board: clearLines(state.board.slice()),
-      }
+      return { ...clearLines(state) }
     case 'fall':
       return { ...fallDown(state) }
     default:

@@ -59,3 +59,7 @@ export const GameState = {
 } as const
 
 export type GameState = (typeof GameState)[keyof typeof GameState]
+
+export type LinesStats = {
+  [key in 1 | 2 | 3 | 4]: number
+}
