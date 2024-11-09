@@ -65,16 +65,25 @@ const stateReducer = (state: State, action: StateAction): State => {
         gameState: GameState.RUNNING,
       }
     case 'rotate':
+      if (hasCollision(state, { rotation: true })) {
+        return state
+      }
       return {
         ...state,
         currentBlock: rotateBlock(state.currentBlock),
       }
     case 'move-left':
+      if (hasCollision(state, { x: -1 })) {
+        return state
+      }
       return {
         ...state,
         currentBlockX: state.currentBlockX - 1,
       }
     case 'move-right':
+      if (hasCollision(state, { x: 1 })) {
+        return state
+      }
       return {
         ...state,
         currentBlockX: state.currentBlockX + 1,
@@ -139,18 +148,28 @@ export const useTetris = () => {
 
   useInterval(gameTick, state.gameState === GameState.RUNNING ? 800 : null)
 
+  const moveLeft = useCallback(() => {
+    dispatchState({ type: 'move-left' })
+  }, [dispatchState])
+
+  const moveRight = useCallback(() => {
+    dispatchState({ type: 'move-right' })
+  }, [dispatchState])
+
+  const rotate = useCallback(() => {
+    dispatchState({ type: 'rotate' })
+  }, [dispatchState])
+
+  const moveDown = useCallback(() => {
+    dispatchState({ type: 'drop' })
+  }, [dispatchState])
+
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.key === 'ArrowLeft') {
-        if (hasCollision(state, { x: -1 })) {
-          return
-        }
         dispatchState({ type: 'move-left' })
       }
       if (event.key === 'ArrowRight') {
-        if (hasCollision(state, { x: 1 })) {
-          return
-        }
         dispatchState({ type: 'move-right' })
       }
       if (event.key === 'ArrowDown') {
@@ -160,9 +179,6 @@ export const useTetris = () => {
         dispatchState({ type: 'fall' })
       }
       if (event.key === 'ArrowUp') {
-        if (hasCollision(state, { rotation: true })) {
-          return
-        }
         dispatchState({ type: 'rotate' })
       }
     }
@@ -172,5 +188,5 @@ export const useTetris = () => {
 
   const updatedState = updateBoard(state)
 
-  return { ...updatedState, startGame, pauseGame, resumeGame }
+  return { ...updatedState, startGame, pauseGame, resumeGame, moveLeft, moveRight, rotate, moveDown }
 }
