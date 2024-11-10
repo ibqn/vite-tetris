@@ -1,6 +1,7 @@
 import { Block, GameState } from '@/types'
 import { Cell } from '@/components/cell'
 import { ComponentProps, forwardRef } from 'react'
+import { Label } from '@/components/label'
 
 type Props = {
   board: Block[]
@@ -19,10 +20,13 @@ export const Board = forwardRef<Ref, Props>(({ board, gameState }, ref) => {
       {board.map((block, index) => (
         <Cell key={index} block={block} />
       ))}
+
       {gameState === GameState.PAUSED && (
-        <div className="absolute left-0 right-0 top-1/2 flex -translate-y-1/2 animate-pulsate items-center justify-center bg-black/30 p-4 text-2xl uppercase text-white">
-          paused
-        </div>
+        <Label className="absolute left-0 right-0 top-1/2 -translate-y-1/2">paused</Label>
+      )}
+
+      {gameState === GameState.GAME_OVER && (
+        <Label className="absolute left-0 right-0 top-1/2 -translate-y-1/2">game over</Label>
       )}
     </div>
   )
