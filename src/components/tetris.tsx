@@ -53,7 +53,7 @@ export const Tetris = () => {
 
   return (
     <div className="flex flex-row gap-x-4 text-white">
-      <Board ref={boardRef} board={board} />
+      <Board ref={boardRef} board={board} gameState={gameState} />
       <div className="flex min-w-36 flex-col gap-8">
         <UpcomingBlocks upcomingBlocks={upcomingBlocks} />
         <CurrentScore score={score} />
