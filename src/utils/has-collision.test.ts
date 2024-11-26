@@ -13,6 +13,7 @@ describe('hasCollision', () => {
     upcomingBlocks: [],
     currentBlockX: 0,
     currentBlockY: 0,
+    linesStats: { 1: 0, 2: 0, 3: 0, 4: 0 },
     score: 0,
     gameState: GameState.RUNNING,
   })
